@@ -1,7 +1,0 @@
-# https://jupyterbook.org/en/stable/customize/config.html
-name: quanttide-usercase-of-data-engineering
-title: 量潮数据工程用例库
-author: 量潮科技
-description: 量潮数据工程用例库
-# Jupyter Book Config
-only_build_toc_files: true
