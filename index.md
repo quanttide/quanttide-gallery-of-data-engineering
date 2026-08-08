@@ -6,6 +6,7 @@
 
 | 案例 | 场景类型 | 验证日期 |
 |------|---------|---------|
+| [电商价格数据库](xmucpp/index.md) | 电商价格采集 | 2026-07-26 |
 | [量潮科技数字化](quanttide/index.md) | 内部客户 · 议事决议数据治理 | 2026-08-08 |
 
 > 已归档案例（GHTorrent / SEC Credit Agreement / Cosmetics Inspection Report / text_marking）见 [data/archive/gallery](https://github.com/quanttide/quanttide-archive-of-data-engineering/tree/main/gallery)。
