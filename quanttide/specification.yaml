@@ -1,7 +1,7 @@
 metadata:
   name: liangchao-digital
   version: "0.1.0"
-  description: 量潮科技数字化 — 议事决议数据治理
+  description: 量潮科技数字化（第一期）— 议事决议数据治理
 spec:
   contract:
     name: liangchao-digital-resolution
