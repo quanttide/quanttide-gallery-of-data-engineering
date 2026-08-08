@@ -9,3 +9,4 @@
 | [GHTorrent](case-ghtorrent.md) | 开源数据精炼 | 2026-07-23 |
 | [SEC Credit Agreement](case-sec-credit-agreement.md) | 文档分类 | 2026-07-24 |
 | [Cosmetics Inspection Report](case-cosmetics-inspection-report.md) | 结构化抽取 | 2026-07-24 |
+| [量潮科技数字化](quanttide/index.md) | 内部客户 · 议事决议数据治理 | 2026-08-08 |
