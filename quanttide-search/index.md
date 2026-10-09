@@ -118,7 +118,7 @@
 
 ### 操作定义
 
-- **搜索判定**：一次工具调用满足任一条件即计为搜索——工具名 ∈ 搜索工具集（search_files、session_search、memory_search、grep、glob、find_path、list_directory）；或工具为 shell 类（terminal、bash）且命令行匹配搜索动词（grep、rg、find、fd、ls、tree）。
+- **搜索判定**：一次工具调用满足任一条件即计为搜索——工具名 ∈ 搜索工具集（search_files、session_search、memory_search、grep、glob、find、find_path、list_directory、search）；或工具为 shell 类（terminal、bash、shell、run_terminal_cmd）且命令行匹配搜索动词（grep、rg、ripgrep、find、fd、locate、ag、ack、ls、tree、which、whereis）。
 - **查询漂移** drift(q, g)：查询与任务目标的语义相似度低于阈值 δ。
 - **结果被消费** consume(e)：结果之后的首个非搜索动作读用了该结果（读文件、引用等）。
 - **结果未利用**：结果被消费为假。
@@ -185,6 +185,8 @@ tool_budget    → result_unused
 
 ## 数据实现
 
+本节给出一条可复现的实现路径。技术栈为 Python 与 polars，中间产物用 Parquet，同一条命令行工具贯穿采集、清洗、分析与报告。
+
 ### 采集
 
 输入是各来源的本地会话数据，输出是统一原始区。
@@ -197,11 +199,11 @@ tool_budget    → result_unused
 
 归一化把每个来源的会话转换成统一形状：会话携带元数据（编号、来源、标题、模型、起止时间）与消息列表；assistant 消息携带工具调用（工具名与参数），工具结果消息携带调用编号与结果文本。不同来源的工具调用结构差异在此抹平。搜索判定与特征抽取按「数据规格」的操作定义执行，实现层不另立定义。
 
-产物为四张 Parquet 表：会话表、消息表（带搜索相关标注）、工具调用表（参数已解析为对象）、搜索事件表（附查询、结果与行为特征）。同时写清洗清单，记录四表行数与按来源的搜索计数。
+产物为四张 Parquet 表——`sessions`、`messages`（带搜索相关标注）、`tool_calls`（参数已解析为对象）、`search_events`（附查询、结果与行为特征）——以及清洗清单 `manifest.json`，记录四表行数与按来源的搜索计数。
 
 ### 分析
 
-输入是清洗后的搜索事件表，输出是指标 JSON。按「数据规格」的指标定义与聚合维度计算；分母、阈值与分组口径均以规格层为准。
+输入是清洗后的搜索事件表，输出是指标 JSON 与报告 Markdown，落在 `data/report/`。按「数据规格」的指标定义与聚合维度计算；分母、阈值与分组口径均以规格层为准。
 
 ### 验证
 
@@ -219,4 +221,4 @@ tool_budget    → result_unused
 
 ### 复现入口
 
-同一条命令行工具提供五个子命令——`collect`、`clean`、`analyze`、`verify`、`report`，依次执行即可从本地会话数据得到诊断报告；`run` 可一次串起全部步骤。
+复现命令依次为采集 `load`、清洗 `clean`、分析 `analyze`；`analyze` 同时产出诊断报告与指标 JSON。对 H1–H3 的统计检验尚未自动化，需按「验证方法」另行执行。
